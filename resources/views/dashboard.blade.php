@@ -56,7 +56,7 @@
             <div class="co-12 col-md-4">
                 <div class="card">
                     <div class="card-header">
-                        Stok Terendah
+                        <h4>Stok Terendah</h4>
                     </div>
                     <div class="card-body">
                         <table class="table table-borderless">
