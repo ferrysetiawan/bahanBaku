@@ -299,7 +299,8 @@ Pembelian
                                     showConfirmButton: false,
                                     timer: 3000
                                 }).then(function () {
-                                    location.reload();
+                                    var dataTable = $('#table-pembelian').DataTable();
+                                    dataTable.ajax.reload();
                                 });
                             } else {
                                 Swal.fire({
