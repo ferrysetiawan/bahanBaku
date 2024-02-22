@@ -50,6 +50,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::post('/pembelian/bahanbaku/store', [PembelianController::class, 'bahanBakuStore'])->name('pembelianBahanBaku.store');
     Route::get('/pembelian/edit/{id}', [PembelianController::class, 'edit'])->name('pembelian.edit');
     Route::put('/pembelian/update/{id}', [PembelianController::class, 'update'])->name('pembelian.update');
+    Route::delete('/pembelian/delete/{id}', [PembelianController::class, 'destroy'])->name('pembelian.destroy');
 
     //pengeluaran kasir
     Route::get('/pengeluaran-kasir', [PengeluaranKasirController::class, 'index'])->name('kasir-keluar');

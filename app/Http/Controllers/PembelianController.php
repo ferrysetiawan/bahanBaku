@@ -162,4 +162,38 @@ class PembelianController extends Controller
         return response()->json(['status' => 'success']);
 
     }
+
+    public function destroy($id)
+    {
+        $pembelian = Pembelian::find($id);
+
+        // Simpan qty lama
+        $qtyLama = $pembelian->qty;
+
+
+        if (Pengaturan::where('nama', 'stok')->first()->status == 'on') {
+
+            // Hitung selisih qty baru dengan qty lama
+            $selisihQty = $qtyLama;
+
+            // Ambil data bahan baku
+            $bahanBaku = $pembelian->bahan_baku;
+
+            // Sesuaikan stok bahan baku berdasarkan selisih qty
+            $bahanBaku->stok -= $selisihQty;
+
+            $bahanBaku->save();
+        }
+
+        $pembelian->delete();
+        if ($pembelian) {
+            return response()->json([
+                'status' => 'success'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error'
+            ]);
+        }
+    }
 }

@@ -249,7 +249,8 @@ Pembelian
                 {
                     data: null,
                     render: function (data) {
-                        return '<button class="btn btn-warning" onclick="openEditModal(' + data.id + ')" id="editBtn' + data.id + '">Edit</button>';
+                        return '<button class="btn btn-warning mr-1" onclick="openEditModal(' + data.id + ')" id="editBtn' + data.id + '"><i class="fas fa-pencil-alt"></i></button>' +
+                               '<button class="btn btn-danger" onclick="destroy(' + data.id + ')" id="' + data.id + '"><i class="fas fa-trash"></i></button>'
                     }
                 }
             ]
@@ -265,6 +266,57 @@ Pembelian
             table.ajax.reload();
         });
     });
+
+    function destroy(id) {
+            var id = id;
+            var token = $("meta[name='csrf-token']").attr("content");
+
+            Swal.fire({
+                title: 'APAKAH KAMU YAKIN ?',
+                text: "INGIN MENGHAPUS DATA INI!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'BATAL',
+                confirmButtonText: 'YA, HAPUS!',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    //ajax delete
+                    jQuery.ajax({
+                        url: `pembelian/delete/${id}`,
+                        data: {
+                            "id": id,
+                            "_token": token
+                        },
+                        type: 'DELETE',
+                        success: function (response) {
+                            if (response.status == "success") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'BERHASIL!',
+                                    text: 'DATA BERHASIL DIHAPUS!',
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                }).then(function () {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'GAGAL!',
+                                    text: 'DATA GAGAL DIHAPUS!',
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                }).then(function () {
+                                    location.reload();
+                                });
+                            }
+                        }
+                    });
+                }
+            })
+        }
     function openEditModal(id) {
         // Dapatkan data dari server berdasarkan ID
         $.ajax({
